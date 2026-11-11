@@ -8,6 +8,7 @@ DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 echo "==> 匯出 conky 設定"
 mkdir -p "$DIR/conky"
 cp -f "$HOME"/.config/conky/*.conf "$DIR/conky/"
+cp -f "$HOME"/.config/conky/*.sh "$DIR/conky/" 2>/dev/null || true
 
 echo "==> 匯出 conky 開機自動啟動設定"
 if [ -f "$HOME/.config/autostart/conky.desktop" ]; then

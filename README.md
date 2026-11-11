@@ -1,21 +1,23 @@
 # desktop-widgets-backup
 
-Ubuntu 桌面小工具設定備份，可在新機器上一鍵還原。目前內容為 conky 的右上角時鐘與系統監控。
+Ubuntu 桌面小工具設定備份，可在新機器上一鍵還原。目前內容為 conky 的右上角時鐘（含農曆）與系統監控。
 
 ## 內容
 
 | 檔案 / 資料夾 | 說明 |
 | --- | --- |
-| `restore.sh` | 一鍵還原腳本（安裝 conky 與字型 + 還原設定 + 開機自動啟動 + 重啟 conky） |
+| `restore.sh` | 一鍵還原腳本（安裝 conky、字型與 node + 還原設定 + 開機自動啟動 + 重啟 conky） |
 | `export.sh` | 一鍵匯出腳本（重新匯出目前設定到本資料夾） |
-| `conky/conky.conf` | 時鐘：時間與日期，置於右上角 |
+| `conky/conky.conf` | 時鐘：時間、日期與農曆，置於右上角 |
+| `conky/lunar.sh` | 農曆計算腳本（以 node 內建的 `Intl` 中國曆法計算，供時鐘每 60 秒呼叫） |
 | `conky/sysmon.conf` | 系統監控：CPU、記憶體、顯示卡、硬碟，置於時鐘下方 |
 | `conky.desktop` | 開機自動啟動設定（`~/.config/autostart/`） |
 
 ## 設定重點
 
 - 字型：`Noto Sans CJK TC`（時鐘 56 號、監控 11 號）
-- 位置：右上角，監控區塊在時鐘下方（`sysmon.conf` 的 `gap_y = 215`）
+- 位置：右上角，監控區塊在時鐘下方（`sysmon.conf` 的 `gap_y = 243`）
+- 農曆：如 `農曆 丙午年十月初三`；node 以 nvm 安裝時，`lunar.sh` 會自動到 `~/.nvm` 找最新版本
 - 監控項目：
   - CPU 使用率
   - 記憶體用量
@@ -33,8 +35,8 @@ git pull
 
 腳本會依序執行：
 
-1. 若缺少則以 apt 安裝 `conky-all` 與 `fonts-noto-cjk`
-2. 將 `conky/*.conf` 複製到 `~/.config/conky/`
+1. 分別檢查 conky、Noto Sans CJK TC 字型、node，缺少的以 apt 安裝（`conky-all`、`fonts-noto-cjk`、`nodejs`）
+2. 將 `conky/*.conf` 與 `conky/*.sh` 複製到 `~/.config/conky/`
 3. 將 `conky.desktop` 複製到 `~/.config/autostart/`，開機自動啟動
 4. 重啟 conky
 
@@ -54,6 +56,6 @@ git commit -am "chore: 更新桌面小工具設定備份"
 git push
 ```
 
-`export.sh` 會把 `~/.config/conky/*.conf` 與 `~/.config/autostart/conky.desktop` 複製到本資料夾，接著以 git 提交推送即完成備份。
+`export.sh` 會把 `~/.config/conky/*.conf`、`*.sh` 與 `~/.config/autostart/conky.desktop` 複製到本資料夾，接著以 git 提交推送即完成備份。
 
 > 第一次新增檔案（例如新的 `.conf`）時，`git commit -am` 不會包含新檔，請先 `git add .`。
