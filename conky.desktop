@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=Conky
+Comment=Desktop clock
+Exec=sh -c "sleep 10 && conky -d && conky -d -c ~/.config/conky/sysmon.conf"
+X-GNOME-Autostart-enabled=true
